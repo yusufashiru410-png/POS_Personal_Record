@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta name="theme-color" content="#0b0f14">
+  <meta name="description" content="Personal Moniepoint POS transaction and accountability record.">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+
+  <title>POS Record</title>
+</head>
+
+<body>
+
+  <!-- ============================= -->
+  <!-- APP -->
+  <!-- ============================= -->
+
+  <div id="app">
+
+    <!-- ============================= -->
+    <!-- START DAY SCREEN -->
+    <!-- ============================= -->
+
+    <section id="startDayScreen" class="screen">
+
+      <div class="start-day-container">
+
+        <div class="app-logo">
+          <div class="logo-icon">₦</div>
+          <h1>POS Record</h1>
+          <p>Start your working day</p>
+        </div>
+
+        <div class="card">
+
+          <div class="card-header">
+            <h2>Opening Balance</h2>
+            <p>Enter the balances at the beginning of your day.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="openingCash">Physical Cash</label>
+
+            <div class="input-wrapper">
+              <span>₦</span>
+              <input
+                type="number"
+                id="openingCash"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="openingPos">Moniepoint / POS Balance</label>
+
+            <div class="input-wrapper">
+              <span>₦</span>
+              <input
+                type="number"
+                id="openingPos"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+              >
+            </div>
+          </div>
+
+          <div class="total-box">
+            <span>Opening Total</span>
+            <strong id="openingTotal">₦0.00</strong>
+          </div>
+
+          <button id="startDayBtn" class="primary-button">
+            Start Working Day
+          </button>
+
+        </div>
+
+        <p class="security-note">
+          Your records are stored locally on this phone.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- DASHBOARD -->
+    <!-- ============================= -->
+
+    <section id="dashboardScreen" class="screen hidden">
+
+      <header class="top-header">
+
+        <div>
+          <p class="small-label">Today</p>
+          <h1 id="currentDayDate">Today</h1>
+        </div>
+
+        <span id="dayStatus" class="status-badge">
+          Open
+        </span>
+
+      </header>
+
+
+      <main class="page-content">
+
+        <div class="balance-card">
+
+          <div class="balance-card-label">
+            Opening Total
+          </div>
+
+          <div
+            id="dashboardOpeningTotal"
+            class="balance-amount"
+          >
+            ₦0.00
+          </div>
+
+          <div class="balance-breakdown">
+
+            <div>
+              <span>Cash</span>
+              <strong id="dashboardOpeningCash">₦0.00</strong>
+            </div>
+
+            <div>
+              <span>POS</span>
+              <strong id="dashboardOpeningPos">₦0.00</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <span>Transactions</span>
+            <strong id="transactionCount">0</strong>
+          </div>
+
+          <div class="stat-card">
+            <span>My Charges</span>
+            <strong id="totalCharges">₦0.00</strong>
+          </div>
+
+        </div>
+
+
+        <div class="section-heading">
+          <h2>Quick Actions</h2>
+        </div>
+
+
+        <div class="quick-actions">
+
+          <button id="newTransactionBtn" class="quick-action">
+            <span class="quick-action-icon">＋</span>
+            <span>New Transaction</span>
+          </button>
+
+          <button id="transactionsBtn" class="quick-action">
+            <span class="quick-action-icon">▣</span>
+            <span>Transactions</span>
+          </button>
+
+          <button id="historyBtn" class="quick-action">
+            <span class="quick-action-icon">◷</span>
+            <span>History</span>
+          </button>
+
+          <button id="endDayBtn" class="quick-action danger-action">
+            <span class="quick-action-icon">✓</span>
+            <span>End Day</span>
+          </button>
+
+        </div>
+
+      </main>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- NEW TRANSACTION -->
+    <!-- ============================= -->
+
+    <section id="transactionScreen" class="screen hidden">
+
+      <header class="page-header">
+
+        <button
+          id="backFromTransactionBtn"
+          class="back-button"
+        >
+          ←
+        </button>
+
+        <div>
+          <p class="small-label">Record</p>
+          <h1 id="transactionScreenTitle">New Transaction</h1>
+        </div>
+
+      </header>
+
+
+      <main class="page-content">
+
+        <div class="card">
+
+          <div class="form-group">
+
+            <label>Transaction Type</label>
+
+            <div class="type-selector">
+
+              <button
+                class="type-button active"
+                data-type="withdrawal"
+              >
+                Withdrawal
+              </button>
+
+              <button
+                class="type-button"
+                data-type="transfer"
+              >
+                Transfer
+              </button>
+
+              <button
+                class="type-button"
+                data-type="deposit"
+              >
+                Deposit
+              </button>
+
+              <button
+                class="type-button"
+                data-type="others"
+              >
+                Others
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="transactionAmount">
+              Transaction Amount
+            </label>
+
+            <div class="input-wrapper large-input">
+              <span>₦</span>
+
+              <input
+                type="number"
+                id="transactionAmount"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+              >
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="transactionCharge">
+              Charge Accepted
+            </label>
+
+            <div class="input-wrapper">
+
+              <span>₦</span>
+
+              <input
+                type="number"
+                id="transactionCharge"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="transactionNote">
+              Note
+              <span class="optional">Optional</span>
+            </label>
+
+            <textarea
+              id="transactionNote"
+              placeholder="Add a note..."
+              rows="3"
+            ></textarea>
+
+          </div>
+
+
+          <button
+            id="saveTransactionBtn"
+            class="primary-button"
+          >
+            Save Transaction
+          </button>
+
+        </div>
+
+      </main>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- TRANSACTIONS LIST -->
+    <!-- ============================= -->
+
+    <section id="transactionsScreen" class="screen hidden">
+
+      <header class="page-header">
+
+        <button
+          id="backFromTransactionsBtn"
+          class="back-button"
+        >
+          ←
+        </button>
+
+        <div>
+          <p class="small-label">Records</p>
+          <h1>Transactions</h1>
+        </div>
+
+      </header>
+
+
+      <main class="page-content">
+
+        <div class="search-box">
+
+          <span>⌕</span>
+
+          <input
+            type="search"
+            id="transactionSearch"
+            placeholder="Search transactions..."
+          >
+
+        </div>
+
+
+        <div class="filter-row">
+
+          <button
+            class="filter-button active"
+            data-filter="all"
+          >
+            All
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="withdrawal"
+          >
+            Withdrawal
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="transfer"
+          >
+            Transfer
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="deposit"
+          >
+            Deposit
+          </button>
+
+          <button
+            class="filter-button"
+            data-filter="others"
+          >
+            Others
+          </button>
+
+        </div>
+
+
+        <div id="transactionList" class="transaction-list"></div>
+
+
+        <div
+          id="emptyTransactions"
+          class="empty-state hidden"
+        >
+
+          <div class="empty-icon">▣</div>
+
+          <h3>No transactions yet</h3>
+
+          <p>Your recorded transactions will appear here.</p>
+
+          <button
+            id="emptyNewTransactionBtn"
+            class="primary-button"
+          >
+            Add Transaction
+          </button>
+
+        </div>
+
+      </main>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- END DAY -->
+    <!-- ============================= -->
+
+    <section id="endDayScreen" class="screen hidden">
+
+      <header class="page-header">
+
+        <button
+          id="cancelEndDayBtn"
+          class="back-button"
+        >
+          ←
+        </button>
+
+        <div>
+          <p class="small-label">Closing</p>
+          <h1>End Working Day</h1>
+        </div>
+
+      </header>
+
+
+      <main class="page-content">
+
+        <div class="warning-box">
+          <strong>Important</strong>
+          <p>
+            Make sure you have finished recording your own transactions
+            before closing this day.
+          </p>
+        </div>
+
+
+        <div class="card">
+
+          <div class="form-group">
+
+            <label for="closingCash">
+              Closing Physical Cash
+            </label>
+
+            <div class="input-wrapper">
+
+              <span>₦</span>
+
+              <input
+                type="number"
+                id="closingCash"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="closingPos">
+              Closing Moniepoint / POS Balance
+            </label>
+
+            <div class="input-wrapper">
+
+              <span>₦</span>
+
+              <input
+                type="number"
+                id="closingPos"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="total-box">
+
+            <span>Closing Total</span>
+
+            <strong id="closingTotal">
+              ₦0.00
+            </strong>
+
+          </div>
+
+
+          <button
+            id="confirmEndDayBtn"
+            class="primary-button danger-button"
+          >
+            Close Working Day
+          </button>
+
+        </div>
+
+      </main>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- HISTORY -->
+    <!-- ============================= -->
+
+    <section id="historyScreen" class="screen hidden">
+
+      <header class="page-header">
+
+        <button
+          id="backFromHistoryBtn"
+          class="back-button"
+        >
+          ←
+        </button>
+
+        <div>
+          <p class="small-label">Archive</p>
+          <h1>Day History</h1>
+        </div>
+
+      </header>
+
+
+      <main class="page-content">
+
+        <div id="historyList" class="history-list"></div>
+
+
+        <div
+          id="emptyHistory"
+          class="empty-state hidden"
+        >
+
+          <div class="empty-icon">◷</div>
+
+          <h3>No previous days</h3>
+
+          <p>
+            Your completed working days will appear here.
+          </p>
+
+        </div>
+
+      </main>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- DAILY REPORT -->
+    <!-- ============================= -->
+
+    <section id="reportScreen" class="screen hidden">
+
+      <header class="page-header">
+
+        <button
+          id="backFromReportBtn"
+          class="back-button"
+        >
+          ←
+        </button>
+
+        <div>
+          <p class="small-label">Report</p>
+          <h1>Daily Report</h1>
+        </div>
+
+      </header>
+
+
+      <main class="page-content">
+
+        <div id="reportDate" class="report-date"></div>
+
+        <div id="dailyReport"></div>
+
+        <button
+          id="exportReportBtn"
+          class="secondary-button"
+        >
+          Export Report
+        </button>
+
+      </main>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- SETTINGS -->
+    <!-- ============================= -->
+
+    <section id="settingsScreen" class="screen hidden">
+
+      <header class="page-header">
+
+        <button
+          id="backFromSettingsBtn"
+          class="back-button"
+        >
+          ←
+        </button>
+
+        <div>
+          <p class="small-label">App</p>
+          <h1>Settings</h1>
+        </div>
+
+      </header>
+
+
+      <main class="page-content">
+
+        <div class="card">
+
+          <div class="settings-item">
+
+            <div>
+              <strong>Backup Records</strong>
+              <p>Save a copy of your records.</p>
+            </div>
+
+            <button
+              id="backupBtn"
+              class="secondary-button"
+            >
+              Backup
+            </button>
+
+          </div>
+
+
+          <div class="settings-item">
+
+            <div>
+              <strong>Restore Records</strong>
+              <p>Restore a previous backup.</p>
+            </div>
+
+            <button
+              id="restoreBtn"
+              class="secondary-button"
+            >
+              Restore
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <input
+          type="file"
+          id="restoreFileInput"
+          accept=".json,application/json"
+          class="hidden"
+        >
+
+
+        <div class="app-info">
+
+          <strong>Moniepoint Personal Record</strong>
+
+          <p>
+            Personal transaction accountability system
+          </p>
+
+          <small>
+            All records are stored locally on this phone.
+          </small>
+
+        </div>
+
+      </main>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- BOTTOM NAVIGATION -->
+    <!-- ============================= -->
+
+    <nav id="bottomNavigation" class="bottom-navigation">
+
+      <button
+        class="nav-item active"
+        data-screen="dashboard"
+      >
+        <span>⌂</span>
+        <small>Home</small>
+      </button>
+
+
+      <button
+        class="nav-item"
+        data-screen="transactions"
+      >
+        <span>▣</span>
+        <small>Records</small>
+      </button>
+
+
+      <button
+        class="nav-add"
+        aria-label="New transaction"
+      >
+        +
+      </button>
+
+
+      <button
+        class="nav-item"
+        data-screen="history"
+      >
+        <span>◷</span>
+        <small>History</small>
+      </button>
+
+
+      <button
+        id="settingsBtn"
+        class="nav-item"
+        data-screen="settings"
+      >
+        <span>⚙</span>
+        <small>Settings</small>
+      </button>
+
+    </nav>
+
+  </div>
+
+
+  <!-- ============================= -->
+  <!-- CONFIRMATION MODAL -->
+  <!-- ============================= -->
+
+  <div
+    id="modalOverlay"
+    class="modal-overlay hidden"
+  >
+
+    <div class="modal">
+
+      <div class="modal-icon">!</div>
+
+      <h2 id="modalTitle">
+        Confirm
+      </h2>
+
+      <p id="modalMessage">
+        Are you sure?
+      </p>
+
+      <div class="modal-actions">
+
+        <button
+          id="modalCancelBtn"
+          class="secondary-button"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="modalConfirmBtn"
+          class="primary-button"
+        >
+          Confirm
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============================= -->
+  <!-- TOAST -->
+  <!-- ============================= -->
+
+  <div
+    id="toast"
+    class="toast"
+  >
+    <span id="toastMessage"></span>
+  </div>
+
+
+  <!-- JAVASCRIPT -->
+  <script src="app.js"></script>
+
+</body>
+</html>

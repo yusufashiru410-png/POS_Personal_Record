@@ -1,0 +1,12 @@
+{
+  "name": "Moniepoint Personal Record",
+  "short_name": "POS Record",
+  "description": "Personal Moniepoint POS transaction and accountability record.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0f14",
+  "theme_color": "#0b0f14",
+  "lang": "en-NG"
+}
