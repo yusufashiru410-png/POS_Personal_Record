@@ -1,4 +1,4 @@
-const CACHE_NAME = "moniepoint-record-v1";
+const CACHE_NAME = "moniepoint-record-v2";
 
 const APP_FILES = [
   "./",
@@ -38,7 +38,13 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      return fetch(event.request).catch(() => {
+        return caches.match("./index.html");
+      });
     })
   );
 });
